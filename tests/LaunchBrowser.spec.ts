@@ -1,19 +1,20 @@
-import {test,expect,Page,Browser} from '@playwright/test'
-import {chromium} from 'playwright'
-test("Title", async ({})=>
+import {test,expect,Page,Browser,Locator} from '@playwright/test'
+import {chromium,firefox} from 'playwright'
+
+test("Login Test", async ({})=>
  {
 const browser:Browser= await chromium.launch({headless:false});
 const page:Page=await browser.newPage();
-await page.goto('https://playwright.dev/');
+await page.goto('https://practicetestautomation.com/practice-test-login/');
 
+//Verify title
 let title: string=await page.title();
-console.log('Title',title);
-
 await expect(page).toHaveTitle(title);
 
-await page.getByRole('link',{name:'Get started'}).click();
-
-let title2: string=await page.title();
-console.log('Title',title2);
+//Verify Login
+await page.locator('#username').fill("student");
+await page.locator('#password').fill("Password123");
+await page.locator('#submit').click();
+expect(page.locator('text=Logged In Successfully')).toBeVisible;
 
 })
